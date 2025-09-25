@@ -8,6 +8,10 @@ OpenAI GPT API를 이용한 요약 유틸
 import os, textwrap, logging
 from typing import Optional, List
 from openai import OpenAI
+from dotenv import load_dotenv  
+
+# .env 자동 로드
+load_dotenv()
 
 log = logging.getLogger(__name__)
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")

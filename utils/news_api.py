@@ -10,6 +10,10 @@ import os, time, hashlib, json, logging
 from dataclasses import dataclass, asdict
 from typing import List, Optional, Dict, Any, Tuple
 import requests
+from dotenv import load_dotenv   # ← 추가
+
+# .env 자동 로드
+load_dotenv()
 
 log = logging.getLogger(__name__)
 NEWSAPI_KEY = os.getenv("NEWSAPI_KEY", "")
