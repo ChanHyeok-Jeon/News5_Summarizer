@@ -1,1 +1,78 @@
-.
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    max-width: 800px;
+    margin: 50px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+}
+
+.search-form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.search-form input {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+}
+
+.search-form button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #3498db;
+    color: white;
+    font-weight: bold;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+}
+
+.search-form button:hover {
+    background-color: #2980b9;
+}
+
+.news-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.news-list li {
+    margin: 10px 0;
+    padding: 10px;
+    background: #ecf0f1;
+    border-radius: 5px;
+    transition: background 0.2s;
+}
+
+.news-list li:hover {
+    background: #dce1e3;
+}
+
+.news-link {
+    text-decoration: none;
+    color: #2c3e50;
+    font-weight: bold;
+}
+
+.summary-box {
+    background: #ecf0f1;
+    padding: 20px;
+    border-radius: 10px;
+}

@@ -1,1 +1,33 @@
-<br>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>News5 Summarizer</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/script.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>📰 News5 Summarizer</h1>
+        <form action="/search" method="get" class="search-form">
+            <input type="text" name="keyword" placeholder="뉴스 키워드를 입력하세요" required>
+            <button type="submit">검색</button>
+        </form>
+
+        <div class="news-list">
+            {% if articles %}
+                <h2>검색 결과</h2>
+                <ul>
+                    {% for article in articles %}
+                        <li>
+                            <a href="/summary?url={{ article.url }}" class="news-link">
+                                {{ article.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
