@@ -1,7 +1,12 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Query
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from typing import Optional, List
+
+# 뉴스 API 클라이언트, GPT 요약기 임포트
+from utils import news_api
+from utils import summarize
 
 app = FastAPI()
 
@@ -9,23 +14,80 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-# 가짜 뉴스 데이터
-dummy_articles = [
-    {"title": "AI가 세상을 바꾸다", "url": "/summary?title=AI가 세상을 바꾸다"},
-    {"title": "클라우드 시대의 보안", "url": "/summary?title=클라우드 시대의 보안"},
-    {"title": "Python, 개발자들이 사랑하는 언어", "url": "/summary?title=Python"},
-    {"title": "Kubernetes로 배우는 운영 자동화", "url": "/summary?title=Kubernetes"},
-    {"title": "데이터 사이언스 최신 동향", "url": "/summary?title=데이터 사이언스"},
-]
+# ──────────────────────────────────────────────
+# 뉴스 API & GPT 요약 클라이언트 초기화
+# ──────────────────────────────────────────────
+news_client = news_api.NewsAPIClient()
+summarizer = summarize.Summarizer()
 
-# 메인 화면 (검색 결과 + 뉴스 5개)
+# ──────────────────────────────────────────────
+# 메인 화면 (최신 뉴스 5개)
+# ──────────────────────────────────────────────
 @app.get("/", response_class=HTMLResponse)
-async def read_root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request, "articles": dummy_articles})
+async def read_root(request: Request, country: str = "kr", category: Optional[str] = None):
+    """
+    최신 헤드라인 5개 가져오기
+    """
+    try:
+        articles: List[news_api.Article] = news_client.top_headlines(country=country, category=category, page_size=5)
+    except Exception as e:
+        articles = []
+        print(f"뉴스 API 호출 실패: {e}")
 
-# 뉴스 요약 결과 화면
+    return templates.TemplateResponse(
+        "index.html",
+        {
+            "request": request,
+            "articles": articles
+        }
+    )
+
+# ──────────────────────────────────────────────
+# 뉴스 요약 화면
+# ──────────────────────────────────────────────
 @app.get("/summary", response_class=HTMLResponse)
-async def read_summary(request: Request, title: str):
-    # OpenAI 붙이기 전이라 임시 요약문 반환
-    summary = f"'{title}' 기사의 요약입니다. 실제 요약 기능은 OpenAI API로 연결 예정입니다."
-    return templates.TemplateResponse("summary.html", {"request": request, "title": title, "summary": summary})
+async def read_summary(
+    request: Request,
+    title: str = Query(...),
+    description: Optional[str] = Query(None),
+    url: Optional[str] = Query(None)
+):
+    """
+    기사 제목/설명/URL 기반 GPT 3줄 요약 생성
+    """
+    try:
+        summary_text = summarizer.summarize_3lines(title=title, description=description or "", url=url)
+    except Exception as e:
+        summary_text = f"요약 생성 실패: {e}"
+
+    return templates.TemplateResponse(
+        "summary.html",
+        {
+            "request": request,
+            "title": title,
+            "summary": summary_text,
+            "url": url
+        }
+    )
+
+# ──────────────────────────────────────────────
+# 뉴스 검색 기능
+# ──────────────────────────────────────────────
+@app.get("/search", response_class=HTMLResponse)
+async def search_news(request: Request, keyword: str = Query(..., min_length=1)):
+    """
+    검색어 기반 뉴스 검색 (최대 5개)
+    """
+    try:
+        articles: List[news_api.Article] = news_client.search(query=keyword, page_size=5)
+    except Exception as e:
+        articles = []
+        print(f"뉴스 검색 실패: {e}")
+
+    return templates.TemplateResponse(
+        "index.html",
+        {
+            "request": request,
+            "articles": articles
+        }
+    )
