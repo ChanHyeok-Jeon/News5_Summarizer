@@ -1,0 +1,10 @@
+fastapi==0.115.0
+uvicorn==0.30.0
+
+jinja2==3.1.4   # HTML 템플릿
+python-multipart==0.0.9   # HTML Form 데이터 처리
+
+requests==2.32.3   # 뉴스 API 호출용
+openai==1.45.0     # OpenAI 요약 API
+
+httpx==0.27.0      # (선택) 비동기 API 호출 시 유용
