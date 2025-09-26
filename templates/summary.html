@@ -11,6 +11,9 @@
         <div class="summary-box">
             <h2>{{ title }}</h2>
             <p>{{ summary }}</p>
+            {% if url %}
+                <p><a href="{{ url }}" target="_blank">🔗 원문 보기</a></p>
+            {% endif %}
             <a href="/">⬅ 돌아가기</a>
         </div>
     </div>

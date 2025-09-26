@@ -76,3 +76,19 @@ h1 {
     padding: 20px;
     border-radius: 10px;
 }
+
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination a, .pagination strong {
+    margin: 0 5px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.pagination a:hover {
+    color: #3498db;
+}
