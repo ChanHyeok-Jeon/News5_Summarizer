@@ -15,6 +15,14 @@
 
 ---
 
+## 👥 팀 역할 분담
+
+* **서버 (main.py)** : 조준희
+* **API (utils - news_api.py, summarize.py)** : 유민형
+* **프론트엔드 (templates, static)** : 전찬혁
+
+---
+
 ## 🛠️ 기술 스택
 - **Backend**: [FastAPI](https://fastapi.tiangolo.com/)  
 - **Frontend**: HTML, CSS, JavaScript (Jinja2 템플릿)  
@@ -52,15 +60,6 @@ News5_Summarizer/
 
 ````
 
----
-
-## 👥 팀 역할 분담
-
-* **서버 (main.py)** : 조준희
-* **API (utils - news_api.py, summarize.py)** : 유민형
-* **프론트엔드 (templates, static)** : 전찬혁
-
----
 
 ## 📌 실행 방법
 
