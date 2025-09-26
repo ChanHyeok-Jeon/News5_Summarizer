@@ -26,7 +26,13 @@
 ---
 
 ## 📂 프로젝트 구조
-<img width="680" height="302" alt="image" src="https://github.com/user-attachments/assets/3a85ccbc-1c7f-4487-a141-2b33f9545368" />
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/183554a8-b069-4d8e-bd61-2427042eaac3" 
+       alt="News Summarizer Architecture" 
+       width="798" height="461">
+</div>
+
 
 ```
 
