@@ -28,11 +28,11 @@
 ## 📂 프로젝트 구조
 ```
 
-News5\_Summarizer/
+News5_Summarizer/
 ├─ main.py                # FastAPI 서버 실행 진입점
 ├─ requirements.txt       # 라이브러리 목록
 ├─ utils/
-│    ├─ news\_api.py       # 뉴스 API 호출 함수
+│    ├─ news_api.py       # 뉴스 API 호출 함수
 │    └─ summarize.py      # OpenAI API 요약 함수
 ├─ templates/
 │    ├─ index.html        # 메인 페이지 (검색 입력 + 뉴스 리스트)
@@ -43,6 +43,14 @@ News5\_Summarizer/
 └─ README.md
 
 ````
+
+---
+
+## 👥 팀 역할 분담
+
+* **서버 (main.py)** : 조준희
+* **API (utils - news_api.py, summarize.py)** : 유민형
+* **프론트엔드 (templates, static)** : 전찬혁
 
 ---
 
@@ -70,5 +78,3 @@ uvicorn main:app --reload --port 8000
 
 4. 브라우저 접속
    👉 [http://127.0.0.1:8000](http://127.0.0.1:8000)
-
----
