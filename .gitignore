@@ -1,1 +1,21 @@
-**/.env
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 환경 설정
+.env
+*.env
+
+# 가상환경
+venv/
+.env/
+.venv/
+
+# IDE/에디터 관련
+.vscode/
+.idea/
+
+# OS 파일
+.DS_Store
+Thumbs.db
