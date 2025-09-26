@@ -26,6 +26,8 @@
 ---
 
 ## 📂 프로젝트 구조
+<img width="680" height="302" alt="image" src="https://github.com/user-attachments/assets/3a85ccbc-1c7f-4487-a141-2b33f9545368" />
+
 ```
 
 News5_Summarizer/
