@@ -1,94 +1,520 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f6f9;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    line-height: 1.6;
+    color: #333;
 }
 
 .container {
-    width: 80%;
-    max-width: 800px;
-    margin: 50px auto;
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: fadeInUp 0.8s ease-out;
 }
 
 h1 {
     text-align: center;
     color: #2c3e50;
+    margin-bottom: 40px;
+    font-size: 2.5rem;
+    font-weight: 300;
+    background: linear-gradient(45deg, #3498db, #9b59b6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
+/* 검색 폼 스타일 */
 .search-form {
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
+    gap: 0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
 }
 
 .search-form input {
-    width: 70%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px 0 0 5px;
+    flex: 1;
+    padding: 16px 24px;
+    border: 2px solid #e0e6ed;
+    border-right: none;
+    border-radius: 30px 0 0 30px;
     outline: none;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.search-form input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
 .search-form button {
-    padding: 10px 20px;
-    border: none;
-    background-color: #3498db;
+    padding: 16px 32px;
+    border: 2px solid #3498db;
+    background: linear-gradient(45deg, #3498db, #2980b9);
     color: white;
-    font-weight: bold;
-    border-radius: 0 5px 5px 0;
+    font-weight: 600;
+    border-radius: 0 30px 30px 0;
     cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
 }
 
 .search-form button:hover {
-    background-color: #2980b9;
+    background: linear-gradient(45deg, #2980b9, #1f5f8b);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+}
+
+.search-form button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.loading {
+    display: none;
+}
+
+/* 뉴스 리스트 */
+.news-list h2 {
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-weight: 400;
+    text-align: center;
+    font-size: 1.3rem;
 }
 
 .news-list ul {
     list-style: none;
     padding: 0;
+    display: grid;
+    gap: 20px;
 }
 
-.news-list li {
-    margin: 10px 0;
-    padding: 10px;
-    background: #ecf0f1;
-    border-radius: 5px;
-    transition: background 0.2s;
+.news-item {
+    background: white;
+    border-radius: 16px;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: 1px solid rgba(0,0,0,0.05);
+    overflow: hidden;
+    animation: slideInUp 0.6s ease-out backwards;
 }
 
-.news-list li:hover {
-    background: #dce1e3;
+.news-item:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    border-color: rgba(52, 152, 219, 0.3);
 }
 
 .news-link {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 24px;
     text-decoration: none;
+    color: inherit;
+    height: 100%;
+}
+
+.news-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.news-content h3 {
     color: #2c3e50;
-    font-weight: bold;
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0;
+    transition: color 0.3s ease;
+}
+
+.news-link:hover h3 {
+    color: #3498db;
+}
+
+.news-desc {
+    color: #7f8c8d;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.news-meta {
+    display: flex;
+    gap: 15px;
+    margin-top: auto;
+}
+
+.news-meta .source {
+    background: linear-gradient(45deg, #3498db, #2980b9);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.news-meta .date {
+    color: #95a5a6;
+    font-size: 0.85rem;
+    padding: 4px 0;
+}
+
+.news-image {
+    width: 120px;
+    height: 80px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.news-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.news-item:hover .news-image img {
+    transform: scale(1.1);
+}
+
+/* 페이지네이션 */
+.pagination {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.pagination-btn, .pagination-current {
+    padding: 12px 16px;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    min-width: 44px;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.pagination-btn {
+    color: #2c3e50;
+    background: white;
+    border: 2px solid rgba(0,0,0,0.1);
+}
+
+.pagination-btn:hover {
+    background: #3498db;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+    border-color: #3498db;
+}
+
+.pagination-current {
+    background: linear-gradient(45deg, #3498db, #2980b9);
+    color: white;
+    border: 2px solid #3498db;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+/* 요약 페이지 스타일 */
+.summary-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.back-btn {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 20px;
+    border: 2px solid #3498db;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.back-btn:hover {
+    background: #3498db;
+    color: white;
+    transform: translateX(-5px);
 }
 
 .summary-box {
-    background: #ecf0f1;
-    padding: 20px;
-    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(240,248,255,0.9));
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(52, 152, 219, 0.2);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
-.pagination {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.pagination a, .pagination strong {
-    margin: 0 5px;
-    text-decoration: none;
-    font-weight: bold;
+.summary-box h2 {
     color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 1.4;
 }
 
-.pagination a:hover {
+.loading-summary {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(52, 152, 219, 0.1);
+    border-left: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+.summary-lines {
+    margin: 30px 0;
+}
+
+.summary-line {
+    background: white;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 12px;
+    border-left: 4px solid #3498db;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    animation: slideInRight 0.6s ease-out backwards;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.summary-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    padding: 14px 28px;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.action-btn.primary {
+    background: linear-gradient(45deg, #3498db, #2980b9);
+    color: white;
+    border: 2px solid #3498db;
+}
+
+.action-btn.secondary {
+    background: white;
     color: #3498db;
+    border: 2px solid #3498db;
+}
+
+.action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(52, 152, 219, 0.3);
+}
+
+.action-btn.secondary:hover {
+    background: #3498db;
+    color: white;
+}
+
+/* 빈 상태 */
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: #7f8c8d;
+}
+
+.empty-state p {
+    font-size: 1.1rem;
+    margin: 10px 0;
+}
+
+/* 애니메이션 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 뉴스 아이템 순차 애니메이션 */
+.news-item:nth-child(1) { animation-delay: 0.1s; }
+.news-item:nth-child(2) { animation-delay: 0.2s; }
+.news-item:nth-child(3) { animation-delay: 0.3s; }
+.news-item:nth-child(4) { animation-delay: 0.4s; }
+.news-item:nth-child(5) { animation-delay: 0.5s; }
+.news-item:nth-child(6) { animation-delay: 0.6s; }
+.news-item:nth-child(7) { animation-delay: 0.7s; }
+.news-item:nth-child(8) { animation-delay: 0.8s; }
+.news-item:nth-child(9) { animation-delay: 0.9s; }
+.news-item:nth-child(10) { animation-delay: 1.0s; }
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .container {
+        padding: 25px;
+        margin: 10px;
+        width: calc(100% - 20px);
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+
+    .search-form {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .search-form input,
+    .search-form button {
+        border-radius: 25px;
+        border: 2px solid #3498db;
+    }
+
+    .news-link {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .news-image {
+        width: 100%;
+        height: 200px;
+        order: -1;
+    }
+
+    .summary-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .summary-header h1 {
+        margin: 0;
+    }
+
+    .summary-box {
+        padding: 25px;
+    }
+
+    .summary-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .pagination {
+        gap: 5px;
+    }
+
+    .pagination-btn, .pagination-current {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+        min-width: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .search-form input,
+    .search-form button {
+        padding: 14px 20px;
+        font-size: 14px;
+    }
+
+    .news-content h3 {
+        font-size: 1.1rem;
+    }
+
+    .summary-line {
+        padding: 15px;
+        font-size: 1rem;
+    }
 }

@@ -2,9 +2,9 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>News Summarizer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📰 News Summarizer</title>
     <link rel="stylesheet" href="/static/style.css">
-    <script src="/static/script.js" defer></script>
 </head>
 <body>
     <div class="container">
@@ -12,20 +12,48 @@
 
         <!-- 검색 폼 -->
         <form action="/search" method="get" class="search-form">
-            <input type="text" name="keyword" placeholder="뉴스 키워드를 입력하세요" required>
-            <button type="submit">검색</button>
+            <input type="text" name="keyword" placeholder="뉴스 키워드를 입력하세요" 
+                   value="{{ keyword or '' }}" required>
+            <button type="submit">
+                <span class="btn-text">검색</span>
+                <span class="loading" style="display: none;">검색중...</span>
+            </button>
         </form>
 
         <!-- 뉴스 리스트 -->
         <div class="news-list">
             {% if articles %}
-                <h2>검색 결과 ({{ page }}/{{ total_pages }} 페이지)</h2>
+                <h2>
+                    {% if keyword %}
+                        "{{ keyword }}" 검색 결과 ({{ page }}/{{ total_pages }} 페이지)
+                    {% else %}
+                        최신 헤드라인 ({{ page }}/{{ total_pages }} 페이지)
+                    {% endif %}
+                </h2>
                 <ul>
                     {% for article in articles %}
-                        <li>
-                            <a href="/summary?title={{ article.title | urlencode }}&description={{ article.description | urlencode }}&url={{ article.url | urlencode }}"
+                        <li class="news-item" data-index="{{ loop.index }}">
+                            <a href="/summary?title={{ article.title | urlencode }}&description={{ (article.description or '') | urlencode }}&url={{ article.url | urlencode }}"
                                class="news-link">
-                                {{ article.title or "제목 없음" }}
+                                <div class="news-content">
+                                    <h3>{{ article.title or "제목 없음" }}</h3>
+                                    {% if article.description %}
+                                        <p class="news-desc">{{ article.description[:120] }}{% if article.description|length > 120 %}...{% endif %}</p>
+                                    {% endif %}
+                                    <div class="news-meta">
+                                        {% if article.source_name %}
+                                            <span class="source">{{ article.source_name }}</span>
+                                        {% endif %}
+                                        {% if article.published_at %}
+                                            <span class="date">{{ article.published_at[:10] }}</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% if article.urlToImage %}
+                                    <div class="news-image">
+                                        <img src="{{ article.urlToImage }}" alt="뉴스 이미지" loading="lazy">
+                                    </div>
+                                {% endif %}
                             </a>
                         </li>
                     {% endfor %}
@@ -33,22 +61,41 @@
 
                 <!-- 페이지네이션 -->
                 <div class="pagination">
+                    {% set base_url = "/search" if keyword else "/" %}
+                    {% set query_params = "keyword=" + (keyword | urlencode) if keyword else "" %}
+                    
                     {% if page > 1 %}
-                        <a href="/search?keyword={{ keyword }}&page={{ page-1 }}">⬅ 이전</a>
+                        <a href="{{ base_url }}?{{ query_params }}{% if query_params %}&{% endif %}page={{ page-1 }}" 
+                           class="pagination-btn">⬅ 이전</a>
                     {% endif %}
+                    
                     {% for p in range(1, total_pages+1) %}
                         {% if p == page %}
-                            <strong>[{{ p }}]</strong>
+                            <span class="pagination-current">{{ p }}</span>
                         {% else %}
-                            <a href="/search?keyword={{ keyword }}&page={{ p }}">{{ p }}</a>
+                            <a href="{{ base_url }}?{{ query_params }}{% if query_params %}&{% endif %}page={{ p }}" 
+                               class="pagination-btn">{{ p }}</a>
                         {% endif %}
                     {% endfor %}
+                    
                     {% if page < total_pages %}
-                        <a href="/search?keyword={{ keyword }}&page={{ page+1 }}">다음 ➡</a>
+                        <a href="{{ base_url }}?{{ query_params }}{% if query_params %}&{% endif %}page={{ page+1 }}" 
+                           class="pagination-btn">다음 ➡</a>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    {% if keyword %}
+                        <p>🔍 "{{ keyword }}"에 대한 검색 결과가 없습니다.</p>
+                        <p>다른 키워드로 검색해보세요.</p>
+                    {% else %}
+                        <p>📰 뉴스를 불러오는 중입니다...</p>
                     {% endif %}
                 </div>
             {% endif %}
         </div>
     </div>
+
+    <script src="/static/script.js"></script>
 </body>
 </html>
